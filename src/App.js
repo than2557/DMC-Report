@@ -178,16 +178,15 @@ async function getData(url = '',data){
 try{
 
   let Authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBpZCI6IjAxIiwicmVtb3RlYWRkciI6IjE3Mi4xNy4wLjEiLCJ1aWQiOjEsInVuYW1lIjoi4Lic4Li54LmJ4LiU4Li54LmB4Lil4Lij4Liw4Lia4LiaIiwiaXNzIjoxNjcwMzkzOTYzMTIxLCJleHAiOjE2NzA0NzU1OTkwMDB9.vvcDZeSunUkFPLsa8xyLjc7MAg1ShdngU7RtIQXwBhk=';
- 
-  const response = await axios({
-    method: 'get',
-    url:url ,
-    data: null,
-    body:data,
-    headers:{
-          'content-type': 'application/json;UTF-8',
-          'Authorization':Authorization
-  }});
+  const response = await fetch(url, {
+    method:'POST', 
+    mode: 'cors',
+    body: data,
+    headers:{ 
+    'content-type': 'application/json;UTF-8',
+    'Authorization':Authorization
+    }
+  });
   return response.json(); 
 }catch(e){
  
