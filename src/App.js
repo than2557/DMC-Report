@@ -1,9 +1,9 @@
 // import logo from './logo.svg';
 import './App.css';
-import React,{useState,SyntheticEvent} from'react';
+import React,{useState,SyntheticEvent,useEffect} from'react';
 import {Button,Card,Row,Col,Container,Navbar,Nav,Jumbotron,InputGroup,Form} from 'react-bootstrap';
 import LineChart from './component/LineChart';
-import axios from 'axios';
+
 
 import 'chart.js/auto'; 
 
@@ -28,11 +28,13 @@ function App() {
     "ธ.ค.",
     "ม.ค."
   ];
+  let datasets = [];
   const [type, setType] = useState();
   const [state, setState] = useState();
   const [year, setYear] = useState();
-  const [ChartData,setChartData] = useState({labels, datasets: [
-    {
+  const [ChartData,setChartData] = useState({labels, datasets});
+
+/** {
       label: "ขาย",
       fill: false,
       backgroundColor: "rgba(235, 22, 22, .7)",
@@ -85,21 +87,26 @@ function App() {
       borderWidth: 2,
       pointBorderColor: "rgb(255, 255, 255, 1)",
       data: [16, 15, 25, 51, 6, 15, 25, 35, 45, 15, 65, 6]
-    }
-  ]
-});
+    }*/
   // รูปที่  NAVBAR
   const getdata =  async(e:SyntheticEvent)=>{
     e.preventDefault();
     // console.log({type,state,year})
+    
     const url = 'http://192.168.33.54:9877/DmscReportGateway/api/v1/report/01';
     let reqData = JSON.stringify({type,state,year});
     console.log(reqData);
     const datares = await getData(url,reqData);
-    console.log(datares);
-  
+    let dataset = datares.data.datasets;
+    console.log(dataset);
+    
+    let jdata = JSON.stringify(dataset);
+    console.log(jdata);
+    datasets = jdata;
 
+    setChartData({labels,datasets});
   }
+  useEffect(()=>{})
   return (
     <div>
     <Navbar class="justify-content-between" bg="light" expand="jg">
