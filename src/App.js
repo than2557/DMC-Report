@@ -1,4 +1,5 @@
-// import logo from './logo.svg';
+
+import ReactDOM from'react-dom';
 import './App.css';
 import React,{useState,SyntheticEvent,useEffect} from'react';
 import {Button,Card,Row,Col,Container,Navbar,Nav,Jumbotron,InputGroup,Form} from 'react-bootstrap';
@@ -8,7 +9,7 @@ import LineChart from './component/LineChart';
 import 'chart.js/auto'; 
 
 function App() {
-  let data = {"type":1,"state":1,"startdate":1670317980373,"enddate":1670317988570}
+  let data_mock = {"type":1,"state":1,"year":"2022"}
   const options = {
     responsive: true,
     maintainAspectRatio:false
@@ -28,98 +29,101 @@ function App() {
     "ธ.ค.",
     "ม.ค."
   ];
-  let datasets = [];
+  
+let LineData = {labels,datasets: [
+  {
+    label: "ขาย",
+    fill: false,
+    backgroundColor: "rgba(235, 22, 22, .7)",
+    borderColor: "rgba(235, 22, 22, .7)",
+    borderWidth: 2,
+    pointBorderColor: "rgb(255, 255, 255, 1)",
+    data: [8, 80, 100, 200, 100, 90, 10, 5, 23, 45, 65, 78, 50]
+  },
+  {
+    label: "ครอบครอง",
+    fill: false,
+    backgroundColor: "rgba(0, 0, 255)",
+    borderColor: "rgba(0, 0, 255)",
+    borderWidth: 2,
+    pointBorderColor: "rgb(255, 255, 255, 1)",
+    data: [60, 60, 15, 51, 6, 5, 5, 5, 5, 5, 5, 5]
+  },
+  {
+    label: "นำเข้า",
+    fill: false,
+    backgroundColor: "rgba(60, 179, 113)",
+    borderColor: "rgba(60, 179, 113)",
+    borderWidth: 2,
+    pointBorderColor: "rgb(255, 255, 255, 1)",
+    data: [20, 15, 15, 51, 60, 55, 45, 51, 80, 87, 53, 23]
+  },
+  {
+    label: "นำผ่าน",
+    fill: false,
+    backgroundColor: "rgb(255, 165, 0)",
+    borderColor: "rgb(255, 165, 0)",
+    borderWidth: 2,
+    pointBorderColor: "rgb(255, 255, 255, 1)",
+    data: [15, 15, 15, 51, 6, 53, 9, 53, 40, 53, 60, 53]
+  },
+  {
+    label: "ผลิต",
+    fill: false,
+    backgroundColor: "rgb(238, 130, 238)",
+    borderColor: "rgb(238, 130, 238)",
+    borderWidth: 2,
+    pointBorderColor: "rgb(255, 255, 255, 1)",
+    data: [16, 15, 15, 51, 6, 51, 52, 53, 54, 56, 59, 0]
+  },
+  {
+    label: "ส่งออก",
+    fill: false,
+    backgroundColor: "rgba(165, 55, 253, 1)",
+    borderColor: "rgba(165, 55, 253, 1)",
+    borderWidth: 2,
+    pointBorderColor: "rgb(255, 255, 255, 1)",
+    data: [16, 15, 25, 51, 6, 15, 25, 35, 45, 15, 65, 6]
+  }
+]};
+
+console.log(LineData);
   const [type, setType] = useState();
   const [state, setState] = useState();
   const [year, setYear] = useState();
-  const [ChartData,setChartData] = useState({labels, datasets});
+  const [ChartData,setChartData] = useState(LineData);
+const SerachData =  () => {
+  useEffect(async()=>{
+    let Authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBpZCI6IjAxIiwicmVtb3RlYWRkciI6IjE3Mi4xNy4wLjEiLCJ1aWQiOjEsInVuYW1lIjoi4Lic4Li54LmJ4LiU4Li54LmB4Lil4Lij4Liw4Lia4LiaIiwiaXNzIjoxNjcwMzkzOTYzMTIxLCJleHAiOjE2NzA0NzU1OTkwMDB9.vvcDZeSunUkFPLsa8xyLjc7MAg1ShdngU7RtIQXwBhk=';
 
-/** {
-      label: "ขาย",
-      fill: false,
-      backgroundColor: "rgba(235, 22, 22, .7)",
-      borderColor: "rgba(235, 22, 22, .7)",
-      borderWidth: 2,
-      pointBorderColor: "rgb(255, 255, 255, 1)",
-      data: [8, 80, 100, 200, 100, 90, 10, 5, 23, 45, 65, 78, 50]
-    },
-    {
-      label: "ครอบครอง",
-      fill: false,
-      backgroundColor: "rgba(0, 0, 255)",
-      borderColor: "rgba(0, 0, 255)",
-      borderWidth: 2,
-      pointBorderColor: "rgb(255, 255, 255, 1)",
-      data: [60, 60, 15, 51, 6, 5, 5, 5, 5, 5, 5, 5]
-    },
-    {
-      label: "นำเข้า",
-      fill: false,
-      backgroundColor: "rgba(60, 179, 113)",
-      borderColor: "rgba(60, 179, 113)",
-      borderWidth: 2,
-      pointBorderColor: "rgb(255, 255, 255, 1)",
-      data: [20, 15, 15, 51, 60, 55, 45, 51, 80, 87, 53, 23]
-    },
-    {
-      label: "นำผ่าน",
-      fill: false,
-      backgroundColor: "rgb(255, 165, 0)",
-      borderColor: "rgb(255, 165, 0)",
-      borderWidth: 2,
-      pointBorderColor: "rgb(255, 255, 255, 1)",
-      data: [15, 15, 15, 51, 6, 53, 9, 53, 40, 53, 60, 53]
-    },
-    {
-      label: "ผลิต",
-      fill: false,
-      backgroundColor: "rgb(238, 130, 238)",
-      borderColor: "rgb(238, 130, 238)",
-      borderWidth: 2,
-      pointBorderColor: "rgb(255, 255, 255, 1)",
-      data: [16, 15, 15, 51, 6, 51, 52, 53, 54, 56, 59, 0]
-    },
-    {
-      label: "ส่งออก",
-      fill: false,
-      backgroundColor: "rgba(165, 55, 253, 1)",
-      borderColor: "rgba(165, 55, 253, 1)",
-      borderWidth: 2,
-      pointBorderColor: "rgb(255, 255, 255, 1)",
-      data: [16, 15, 25, 51, 6, 15, 25, 35, 45, 15, 65, 6]
-    }*/
-  // รูปที่  NAVBAR
-  const getdata =  async(e:SyntheticEvent)=>{
-    e.preventDefault();
-    // console.log({type,state,year})
-    
-    const url = 'http://192.168.33.54:9877/DmscReportGateway/api/v1/report/01';
-    let reqData = JSON.stringify({type,state,year});
-    console.log(reqData);
-    const datares = await getData(url,reqData);
-    let dataset = datares.data.datasets;
-    console.log(dataset);
-    
-    let jdata = JSON.stringify(dataset);
-    console.log(jdata);
-    datasets = jdata;
+    let url ='http://192.168.33.54:9877/DmscReportGateway/api/v1/report/01';
+    const response = await fetch(url,{
+      method:'POST', 
+      mode: 'cors',
+      body: data_mock,
+      headers:{ 
+        'content-type': 'application/json;UTF-8',
+        'Authorization':Authorization
+      }
+    })
+    console.log(response.json())
+    setChartData(response.json())
+    },)
+}
 
-    setChartData({labels,datasets});
-  }
-  useEffect(()=>{})
   return (
     <div>
-    <Navbar class="justify-content-between" bg="light" expand="jg">
+    <Navbar className="justify-content-between" bg="light" expand="jg">
     <Navbar.Brand> 
       DMC-REPORT
     </Navbar.Brand>
     </Navbar>
     <br/>
     <br/>
-  <div class="card col-md-8 center">
-  <div class="container">
-  <div class="row">
-    <div class="col">
+  <div className="card col-md-8 center">
+  <div className="container">
+  <div className="row">
+    <div className="col">
  <br/>
       <InputGroup className="mb-2">
         <InputGroup.Text id="basic-addon1">ประเภท</InputGroup.Text>
@@ -130,7 +134,7 @@ function App() {
     </Form.Select>
       </InputGroup>
     </div>
-    <div class="col">
+    <div className="col">
     <br/>
       <InputGroup className="mb-4">
       <InputGroup.Text id="basic-addon1">สถานะ</InputGroup.Text>
@@ -147,7 +151,7 @@ function App() {
       </Form.Select>
       </InputGroup>
     </div>
-    <div class="col">
+    <div className="col">
     <br/>
       <InputGroup className="mb-2">
       <InputGroup.Text id="basic-addon1">ปี</InputGroup.Text>
@@ -160,18 +164,19 @@ function App() {
       </Form.Select>
       </InputGroup>
     </div>
-    <div class="col">
+    <div className="col">
     <br/>
-      <Button onClick={getdata}>ค้นหาข้อมูล</Button>
+      <Button onClick={SerachData}>ค้นหาข้อมูล</Button>
     </div>
   </div>
 </div>
   </div>
 
 
-  <div class="container">
-    <div class="row">
-    <LineChart options={options} chartData={ChartData} />
+  <div className="container">
+    <div className="row">
+
+    <LineChart options={options} ChartData={ChartData}/>
     </div>
    
       </div>
@@ -181,25 +186,7 @@ function App() {
   );
 }
 
-async function getData(url = '',data){
-try{
 
-  let Authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBpZCI6IjAxIiwicmVtb3RlYWRkciI6IjE3Mi4xNy4wLjEiLCJ1aWQiOjEsInVuYW1lIjoi4Lic4Li54LmJ4LiU4Li54LmB4Lil4Lij4Liw4Lia4LiaIiwiaXNzIjoxNjcwMzkzOTYzMTIxLCJleHAiOjE2NzA0NzU1OTkwMDB9.vvcDZeSunUkFPLsa8xyLjc7MAg1ShdngU7RtIQXwBhk=';
-  const response = await fetch(url, {
-    method:'POST', 
-    mode: 'cors',
-    body: data,
-    headers:{ 
-    'content-type': 'application/json;UTF-8',
-    'Authorization':Authorization
-    }
-  });
-  return response.json(); 
-}catch(e){
- 
-    return e;
-}
-} 
 
 export default App;
 
