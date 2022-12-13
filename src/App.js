@@ -94,7 +94,7 @@ let LineData = {labels,datasets:[
   const [ChartData,setChartData] = useState(LineData);
 
 const SerachData =  async() => {
-  console.log({type,state,year})
+  // console.log({type,state,year})
   let data_res
 
   let Authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBpZCI6IjAxIiwicmVtb3RlYWRkciI6IjE3Mi4xNy4wLjEiLCJ1aWQiOjEsInVuYW1lIjoi4Lic4Li54LmJ4LiU4Li54LmB4Lil4Lij4Liw4Lia4LiaIiwiaXNzIjoxNjcwMzkzOTYzMTIxLCJleHAiOjE2NzA0NzU1OTkwMDB9.vvcDZeSunUkFPLsa8xyLjc7MAg1ShdngU7RtIQXwBhk=';
@@ -111,9 +111,9 @@ const SerachData =  async() => {
     }
   }).then(response =>response.json().then(data=>({data: data,
         status: response.status})).then(res =>{
-          console.log(res);
+          // console.log(res);
           data_res = res.data;
-          console.log(data_res.datasets);
+          // console.log(data_res.datasets);
       
           setChartData({labels,datasets:data_res.datasets})
         }));
