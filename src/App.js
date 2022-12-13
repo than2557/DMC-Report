@@ -30,7 +30,7 @@ function App() {
     "ม.ค."
   ];
   
-let LineData = {labels,datasets: [
+let LineData = {labels,datasets:[
   {
     label: "ขาย",
     fill: false,
@@ -87,28 +87,38 @@ let LineData = {labels,datasets: [
   }
 ]};
 
-console.log(LineData);
+
   const [type, setType] = useState();
   const [state, setState] = useState();
   const [year, setYear] = useState();
   const [ChartData,setChartData] = useState(LineData);
-const SerachData =  () => {
-  useEffect(async()=>{
-    let Authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBpZCI6IjAxIiwicmVtb3RlYWRkciI6IjE3Mi4xNy4wLjEiLCJ1aWQiOjEsInVuYW1lIjoi4Lic4Li54LmJ4LiU4Li54LmB4Lil4Lij4Liw4Lia4LiaIiwiaXNzIjoxNjcwMzkzOTYzMTIxLCJleHAiOjE2NzA0NzU1OTkwMDB9.vvcDZeSunUkFPLsa8xyLjc7MAg1ShdngU7RtIQXwBhk=';
 
-    let url ='http://192.168.33.54:9877/DmscReportGateway/api/v1/report/01';
-    const response = await fetch(url,{
-      method:'POST', 
-      mode: 'cors',
-      body: data_mock,
-      headers:{ 
-        'content-type': 'application/json;UTF-8',
-        'Authorization':Authorization
-      }
-    })
-    console.log(response.json())
-    setChartData(response.json())
-    },)
+const SerachData =  async() => {
+  console.log({type,state,year})
+  let data_res
+
+  let Authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBpZCI6IjAxIiwicmVtb3RlYWRkciI6IjE3Mi4xNy4wLjEiLCJ1aWQiOjEsInVuYW1lIjoi4Lic4Li54LmJ4LiU4Li54LmB4Lil4Lij4Liw4Lia4LiaIiwiaXNzIjoxNjcwMzkzOTYzMTIxLCJleHAiOjE2NzA0NzU1OTkwMDB9.vvcDZeSunUkFPLsa8xyLjc7MAg1ShdngU7RtIQXwBhk=';
+
+  // let url ='http://192.168.33.54:9877/DmscReportGateway/api/v1/report/01';
+  let url = 'http://localhost:3005/reportData';
+  const response =  await fetch(url,{
+    method:'POST', 
+    mode: 'cors',
+    body: data_mock,
+    headers:{ 
+      'content-type': 'application/json;UTF-8',
+      'Authorization':Authorization
+    }
+  }).then(response =>response.json().then(data=>({data: data,
+        status: response.status})).then(res =>{
+          console.log(res);
+          data_res = res.data;
+          console.log(data_res.datasets);
+      
+          setChartData({labels,datasets:data_res.datasets})
+        }));
+     
+      
 }
 
   return (
@@ -174,7 +184,7 @@ const SerachData =  () => {
 
 
   <div className="container">
-    <div className="row">
+    <div className="row" id="chartID">
 
     <LineChart options={options} ChartData={ChartData}/>
     </div>
