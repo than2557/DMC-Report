@@ -6,6 +6,7 @@ import {Button,Card,Row,Col,Container,Navbar,Nav,Jumbotron,InputGroup,Form} from
 import LineChart from './component/LineChart';
 
 
+
 import 'chart.js/auto'; 
 
 function App() {
@@ -30,62 +31,7 @@ function App() {
     "ม.ค."
   ];
   
-let LineData = {labels,datasets:[
-  {
-    label: "ขาย",
-    fill: false,
-    backgroundColor: "rgba(235, 22, 22, .7)",
-    borderColor: "rgba(235, 22, 22, .7)",
-    borderWidth: 2,
-    pointBorderColor: "rgb(255, 255, 255, 1)",
-    data: [8, 80, 100, 200, 100, 90, 10, 5, 23, 45, 65, 78, 50]
-  },
-  {
-    label: "ครอบครอง",
-    fill: false,
-    backgroundColor: "rgba(0, 0, 255)",
-    borderColor: "rgba(0, 0, 255)",
-    borderWidth: 2,
-    pointBorderColor: "rgb(255, 255, 255, 1)",
-    data: [60, 60, 15, 51, 6, 5, 5, 5, 5, 5, 5, 5]
-  },
-  {
-    label: "นำเข้า",
-    fill: false,
-    backgroundColor: "rgba(60, 179, 113)",
-    borderColor: "rgba(60, 179, 113)",
-    borderWidth: 2,
-    pointBorderColor: "rgb(255, 255, 255, 1)",
-    data: [20, 15, 15, 51, 60, 55, 45, 51, 80, 87, 53, 23]
-  },
-  {
-    label: "นำผ่าน",
-    fill: false,
-    backgroundColor: "rgb(255, 165, 0)",
-    borderColor: "rgb(255, 165, 0)",
-    borderWidth: 2,
-    pointBorderColor: "rgb(255, 255, 255, 1)",
-    data: [15, 15, 15, 51, 6, 53, 9, 53, 40, 53, 60, 53]
-  },
-  {
-    label: "ผลิต",
-    fill: false,
-    backgroundColor: "rgb(238, 130, 238)",
-    borderColor: "rgb(238, 130, 238)",
-    borderWidth: 2,
-    pointBorderColor: "rgb(255, 255, 255, 1)",
-    data: [16, 15, 15, 51, 6, 51, 52, 53, 54, 56, 59, 0]
-  },
-  {
-    label: "ส่งออก",
-    fill: false,
-    backgroundColor: "rgba(165, 55, 253, 1)",
-    borderColor: "rgba(165, 55, 253, 1)",
-    borderWidth: 2,
-    pointBorderColor: "rgb(255, 255, 255, 1)",
-    data: [16, 15, 25, 51, 6, 15, 25, 35, 45, 15, 65, 6]
-  }
-]};
+let LineData = {labels,datasets:[]};
 
 
   const [type, setType] = useState();
@@ -97,14 +43,18 @@ const SerachData =  async() => {
   // console.log({type,state,year})
   let data_res
 
-  let Authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBpZCI6IjAxIiwicmVtb3RlYWRkciI6IjE3Mi4xNy4wLjEiLCJ1aWQiOjEsInVuYW1lIjoi4Lic4Li54LmJ4LiU4Li54LmB4Lil4Lij4Liw4Lia4LiaIiwiaXNzIjoxNjcwMzkzOTYzMTIxLCJleHAiOjE2NzA0NzU1OTkwMDB9.vvcDZeSunUkFPLsa8xyLjc7MAg1ShdngU7RtIQXwBhk=';
+  let data = {type,state,year};
+  
+  console.log(data);
+  let Authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBpZCI6IjAxIiwicmVtb3RlYWRkciI6IjE3Mi4xNy4wLjEiLCJ1aWQiOjEsInVuYW1lIjoi4Lic4Li54LmJ4LiU4Li54LmB4Lil4Lij4Liw4Lia4LiaIiwiaXNzIjoxNjcwOTk4MjIzNDAyLCJleHAiOjE2NzEwODAzOTkwMDB9.3cy13xSdnpCYHQuPKKgL_ei9xTXXvVZz3OatuV4eweg=';
 
   // let url ='http://192.168.33.54:9877/DmscReportGateway/api/v1/report/01';
-  let url = 'http://localhost:3005/reportData';
+  let url = 'http://192.168.33.81:9877/DmscReportGateway/api/v1/report01/data';
+  // let url = 'http://localhost:3005/reportData';
   const response =  await fetch(url,{
     method:'POST', 
     mode: 'cors',
-    body: data_mock,
+    body: JSON.stringify(data),
     headers:{ 
       'content-type': 'application/json;UTF-8',
       'Authorization':Authorization
@@ -113,9 +63,16 @@ const SerachData =  async() => {
         status: response.status})).then(res =>{
           // console.log(res);
           data_res = res.data;
-          // console.log(data_res.datasets);
+          console.log(data_res);
+          if(data_res.status){
+
+            setChartData({labels,datasets:data_res.datasets})
+          }else{
+            setChartData({labels,datasets:[]})
+          }
+          
       
-          setChartData({labels,datasets:data_res.datasets})
+         
         }));
      
       
